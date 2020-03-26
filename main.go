@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"github.com/go-redis/redis/v7"
+	"github.com/thanhchungbtc/redis-in-action-go/chapter3"
+	"time"
 )
 
 func main() {
@@ -11,7 +12,14 @@ func main() {
 		Password: "",
 		DB:       0,
 	})
+	a := chapter3.NewApp(client)
+	//go a.RunPubSub()
+	//a.Publisher(6)
 
-	pong, err := client.Ping().Result()
-	fmt.Println(pong, err)
+	for i := 0; i < 50; i++ {
+		go a.NoTrans()
+	}
+
+	time.Sleep(time.Second)
+
 }
